@@ -1,5 +1,8 @@
 from typing import Optional
 from fastapi import FastAPI
+from pydantic import BaseModel
+import uvicorn
+
 
 app = FastAPI()
 
@@ -72,3 +75,28 @@ def comments(id: int, limit = 10):
                 "data": f"id: {id}, limit: {limit}"
             }
     } 
+
+
+# Blog ist eine Klasse, also ein Komplexer Datentyp mit vielen Attributen, die den blog Beschreiben.
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+
+
+
+
+@app.post('/blog')
+def create_blog(request: Blog):
+    return {
+        "data": 
+            {
+                "data": f"{request} blog was created succesfully"
+            }
+    } 
+
+
+# das hier ist viel besser, macht alles local, ohne dass ich uvicorn starten muss.
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="127.0.0.1", port = 9000)
